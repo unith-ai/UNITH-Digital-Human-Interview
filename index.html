@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Entrevista · Humano Digital</title>
+
+  <!-- CSS del bundle -->
+  <link rel="stylesheet" href="https://internal-testing.unith.ai/dist/bundle.css" />
+
+  <!-- JS del bundle -->
+  <script defer src="https://internal-testing.unith.ai/dist/bundle.js"></script>
+
+  <!-- Fonts -->
+  <link rel="stylesheet"
+    href="https://gpt-head-assets.unith.ai/fonts/stylesheet.css"
+    media="print"
+    onload="this.media='all'"
+  />
+
+  <!-- Microsoft speech recognition bundle -->
+  <script src="https://embedded.unith.ai/microsoft-speech-recognition.js"></script>
+
+  <style>
+    html,body{height:100%;margin:0;background:#0a0d12;color:#fff;font-family:sans-serif}
+
+    /* Barra superior */
+    .topbar{
+      position:fixed;top:0;left:0;right:0;height:56px;
+      display:flex;align-items:center;justify-content:space-between;
+      background:rgba(15,18,23,.9);backdrop-filter:blur(8px);
+      border-bottom:1px solid rgba(255,255,255,.08);
+      font-weight:600;letter-spacing:.3px;
+      padding:0 16px;
+      z-index:50;
+    }
+    .topbar .title{
+      flex:1;text-align:center;
+    }
+    .topbar .logo{
+      width:110px;height:36px;overflow:hidden;
+      display:flex;align-items:center;justify-content:center;
+    }
+    .topbar .logo img{
+      width:100%;height:100%;
+      object-fit:contain; /* mantiene el logo centrado */
+    }
+
+    .stage{position:fixed;inset:56px 0 0 0;display:grid;place-items:center;padding:20px}
+    .call-surface{
+      position:relative;width:100%;height:100%;border-radius:16px;
+      background:#000;box-shadow:0 8px 28px rgba(0,0,0,.55);
+      overflow:hidden;
+    }
+
+    /* Contenedor del humano digital */
+    #talking-head{
+      position:absolute;inset:0;width:100%;height:100%;
+      background:#000;
+    }
+
+    /* Miniatura cámara (abajo-izquierda) */
+    .pip{
+      position:absolute;left:16px;bottom:16px;
+      width:min(28vw, 300px);aspect-ratio:16/9;
+      border-radius:12px;overflow:hidden;background:#000;
+      box-shadow:0 6px 20px rgba(0,0,0,.5),0 0 0 1px rgba(255,255,255,.1) inset;
+      z-index:3;
+    }
+    .pip video{
+      width:100%;height:100%;object-fit:cover;display:block;
+      transform: scaleX(-1); /* espejo estilo Meet/Zoom */
+    }
+    .pip .pip-label{
+      position:absolute;left:8px;bottom:8px;
+      background:rgba(0,0,0,.6);color:#e8eef6;
+      padding:4px 8px;border-radius:6px;font-size:12px
+    }
+    @media(max-width:640px){.pip{width:36vw}}
+  </style>
+</head>
+<body>
+  <!-- Barra superior -->
+  <header class="topbar">
+    <div style="width:110px"></div> <!-- espacio izquierdo -->
+    <div class="title">Interview - HR & Office Manager</div>
+    <div class="logo">
+      <img src="https://images.archbee.com/wYtgycOm4l6BLYK3BHUSM/ZDH-Qywugy2_TjtzIbFVZ_favicon.png" alt="Unith Logo">
+    </div>
+  </header>
+
+  <main class="stage" aria-label="Videollamada">
+    <div class="call-surface">
+      <!-- Humano Digital con integración directa -->
+      <div
+        id="talking-head"
+        data-api_base="https://chat-origin.api.unith.live"
+        data-api_key="34efd4bac0624a2ab8f362efd7b3744d"
+        data-org_id="UNITH-760"
+        data-head_id="laura3.0-18552"
+        data-theme="demo"
+        data-vm_version="1"
+        data-time_pressure="false"
+        data-subs_enabled="true"
+        data-mic_enabled="true"     
+        data-widget_mode="false"
+        data-seamless_transitions="false" 
+      ></div>
+
+      <!-- Tu cámara en miniatura -->
+      <div class="pip">
+        <video id="selfVideo" autoplay playsinline muted></video>
+        <div class="pip-label">Tú</div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    // Vista previa local de cámara/mic (solo para mostrarte)
+    (async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { width:{ideal:1280}, height:{ideal:720}, facingMode:'user' },
+          audio: true
+        });
+        document.getElementById('selfVideo').srcObject = stream;
+      } catch(e) {
+        console.warn('No se pudo iniciar cámara/mic:', e);
+      }
+    })();
+  </script>
+</body>
+</html>
